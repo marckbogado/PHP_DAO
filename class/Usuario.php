@@ -65,8 +65,60 @@ class Usuario {
 
     }
 
+//////////////////////////////////////////////////////////////////
+    public function setDados($dados){
 
-    //RETORNO NA TELA EM JSON
+        $this->setIdusuario($dados['idusuario']);
+        $this->setDeslogin($dados['deslogin']);
+        $this->setDessenha($dados['dessenha']);
+        $this->setDtcadastro(new DateTime($dados['dtcadastro']));
+    }
+//////////////////////////////////////////////////////////////////
+
+    //METODO PARA TRAZER UMA LISTA COM TODOS OS USUARIOS DA TABELA
+    public static function getLista(){
+
+        $sql = new Sql();
+        return $sql->select("SELECT * FROM tb_usuarios ORDER BY deslogin");
+        
+    }
+
+
+    //METODO DE INSERT DE UM NOVO USUÁRIO, TRAZENDO O ID DO USUÁRIO
+    public function inserir(){
+
+        $sql = new Sql();
+        $resultado = $sql->select("CALL sp_usuarios_insert(:LOGIN, :PASSWORD)", array(
+            ":LOGIN"=>$this->getDeslogin(),
+            ":PASSWORD"=>$this->getDessenha()
+        ));
+
+        if (count($resultado) > 0) {
+            $this->setDados($resultado[0]);
+        }
+    }
+
+
+
+    //METODO UPDATE
+    public function update($login, $password){
+        $this->setDeslogin($login);
+        $this->setDessenha($password);
+
+        $sql = new Sql();
+
+        $sql->query1("UPDATE tb_usuarios SET deslogin = :LOGIN, dessenha = :PASSWORD WHERE idusuario = :ID", array(
+
+            ':LOGIN'=>$this->getDeslogin(),
+            ':PASSWORD'=>$this->getDessenha(),
+            ':ID'=>$this->getIdusuario()
+        ));
+    }
+
+
+
+
+    //RETORNO NA TELA EM JSON DE 01 USUARIO
     public function __toString() {
 
         return json_encode(array(
