@@ -117,6 +117,23 @@ class Usuario {
 
 
 
+    //DELETANDO DADOS DO BANCO
+    public function delete(){
+
+        $sql = new Sql();
+
+        $sql->query1("DELETE FROM tb_usuarios WHERE idusuario = :ID", array(
+
+            ':ID'=>$this->getIdusuario()
+        ));
+
+        $this->setIdusuario(0);
+        $this->setDeslogin("");
+        $this->setDessenha("");
+        $this->setDtcadastro(new DateTime());
+    }
+
+
 
     //RETORNO NA TELA EM JSON DE 01 USUARIO
     public function __toString() {

@@ -31,6 +31,7 @@ echo $aluno;
 */
 
 
+/*
 //UPDATE DE USUÁRIO
 $usuario = new Usuario();
 
@@ -39,7 +40,17 @@ $usuario->carreguePorId(7);
 $usuario->update("professor", "8888");
 
 echo $usuario;
+*/
 
+
+//DELETANDO UM USUÁRIO
+$usuario = new Usuario();
+
+$usuario->carreguePorId(7);
+
+$usuario->delete();
+
+echo $usuario;
 
 
 ?>
